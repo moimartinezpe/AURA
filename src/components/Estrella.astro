@@ -1,0 +1,18 @@
+---
+// Separador decorativo: línea · estrella de 4 puntas (isotipo AURA) · línea
+import { LOGOS } from '../config';
+
+interface Props {
+  color?: 'dorado' | 'chocolate' | 'crema';
+  class?: string;
+}
+const { color = 'dorado', class: clase = '' } = Astro.props;
+const src = { dorado: LOGOS.estrellaDorado, chocolate: LOGOS.estrellaChocolate, crema: LOGOS.estrellaCrema }[color];
+const linea = color === 'crema' ? 'bg-crema/30' : 'bg-dorado/60';
+---
+
+<div class:list={['flex items-center justify-center gap-4', clase]} aria-hidden="true">
+  <span class:list={['h-px w-14 sm:w-20', linea]}></span>
+  <img src={src} alt="" width="22" height="22" class="size-[22px]" loading="lazy" decoding="async" />
+  <span class:list={['h-px w-14 sm:w-20', linea]}></span>
+</div>

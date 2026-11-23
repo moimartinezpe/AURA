@@ -1,0 +1,22 @@
+---
+import { MENSAJES } from '../config';
+import { enlaceWhatsApp } from '../lib/whatsapp';
+import Icono from './iconos/Icono.astro';
+
+interface Props {
+  mensaje?: string;
+}
+const { mensaje = MENSAJES.general } = Astro.props;
+---
+
+<!-- Botón flotante: sin sombra (el manual lo prohíbe); el borde crema lo separa del fondo -->
+<a
+  href={enlaceWhatsApp(mensaje)}
+  target="_blank"
+  rel="noopener"
+  aria-label="Escríbenos por WhatsApp"
+  class="fixed right-4 z-50 grid size-14 place-items-center rounded-full border-2 border-crema bg-chocolate text-crema transition-colors hover:bg-cafe sm:right-6"
+  style="bottom: max(1rem, env(safe-area-inset-bottom));"
+>
+  <Icono nombre="whatsapp" class="size-7" />
+</a>

@@ -1,0 +1,28 @@
+---
+import { ICONOS } from './redes';
+
+interface Props {
+  nombre: keyof typeof ICONOS | 'menu' | 'cerrar' | 'flecha';
+  class?: string;
+}
+const { nombre, class: clase = 'size-5' } = Astro.props;
+
+// Íconos de interfaz (trazo fino, coherentes con la estrella de AURA)
+const trazos: Record<string, string> = {
+  menu: 'M4 7h16M4 12h16M4 17h16',
+  cerrar: 'M6 6l12 12M18 6L6 18',
+  flecha: 'M5 12h14M13 6l6 6-6 6',
+};
+---
+
+{
+  nombre in ICONOS ? (
+    <svg class={clase} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+      <path d={ICONOS[nombre as keyof typeof ICONOS]} />
+    </svg>
+  ) : (
+    <svg class={clase} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d={trazos[nombre]} />
+    </svg>
+  )
+}

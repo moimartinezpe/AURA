@@ -1,0 +1,85 @@
+---
+import { LOGOS, MENSAJES, REDES, SITIO } from '../config';
+import { enlaceWhatsApp } from '../lib/whatsapp';
+import Icono from './iconos/Icono.astro';
+
+const tienda = [
+  { texto: 'Catálogo', href: '/catalogo/' },
+  { texto: 'Medallas para mascotas', href: '/medallas-para-mascotas/' },
+  { texto: 'Nosotros', href: '/nosotros/' },
+];
+const ayuda = [
+  { texto: 'Envíos y pagos', href: '/envios-y-pagos/' },
+  { texto: 'Cuidado de tus joyas', href: '/cuidado-de-tus-joyas/' },
+  { texto: 'Preguntas frecuentes', href: '/preguntas-frecuentes/' },
+];
+// Si falta un link (TODO en config.ts), el ícono se muestra apagado y sin enlace.
+const redes = [
+  { nombre: 'TikTok', icono: 'tiktok', href: REDES.tiktok },
+  { nombre: 'Instagram', icono: 'instagram', href: REDES.instagram },
+  { nombre: 'Facebook', icono: 'facebook', href: REDES.facebook },
+] as const;
+const { ancho, alto } = LOGOS.proporcion;
+const anio = new Date().getFullYear();
+---
+
+<footer class="bg-cafe pb-24 text-crema/85 lg:pb-0">
+  <div class="contenedor grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] lg:py-20">
+    <div>
+      <img src={LOGOS.crema} alt="AURA Joyería" width={ancho} height={alto} loading="lazy" decoding="async" class="h-20 w-auto" />
+      <p class="mano mt-6 text-[2.6rem] text-beige">{SITIO.lema}</p>
+    </div>
+
+    <nav aria-label="Tienda">
+      <p class="etiqueta text-dorado">Tienda</p>
+      <ul class="mt-4 space-y-1">
+        {tienda.map((l) => <li><a href={l.href} class="inline-flex min-h-11 items-center hover:text-crema">{l.texto}</a></li>)}
+      </ul>
+    </nav>
+
+    <nav aria-label="Ayuda">
+      <p class="etiqueta text-dorado">Ayuda</p>
+      <ul class="mt-4 space-y-1">
+        {ayuda.map((l) => <li><a href={l.href} class="inline-flex min-h-11 items-center hover:text-crema">{l.texto}</a></li>)}
+      </ul>
+    </nav>
+
+    <div>
+      <p class="etiqueta text-dorado">Síguenos</p>
+      <p class="mt-4">{REDES.usuario}</p>
+      <ul class="mt-3 flex gap-2">
+        {
+          redes.map((r) =>
+            r.href ? (
+              <li>
+                <a href={r.href} target="_blank" rel="noopener" aria-label={`${r.nombre} de AURA`} class="grid size-12 place-items-center rounded-full border border-crema/25 hover:border-crema hover:text-crema">
+                  <Icono nombre={r.icono} class="size-5" />
+                </a>
+              </li>
+            ) : (
+              <li>
+                <span title={`Falta el link de ${r.nombre} (TODO)`} class="grid size-12 place-items-center rounded-full border border-dashed border-crema/25 opacity-50">
+                  <Icono nombre={r.icono} class="size-5" />
+                  <span class="sr-only">{r.nombre} (próximamente)</span>
+                </span>
+              </li>
+            ),
+          )
+        }
+      </ul>
+      <a href={enlaceWhatsApp(MENSAJES.general)} target="_blank" rel="noopener" class="btn btn-claro mt-6">
+        <Icono nombre="whatsapp" class="size-4" /> Escríbenos
+      </a>
+    </div>
+  </div>
+
+  <div class="border-t border-crema/15">
+    <div class="contenedor flex flex-col items-center gap-2 py-6 text-sm sm:flex-row sm:justify-between">
+      <p class="flex items-center gap-2">
+        <img src={LOGOS.estrellaDorado} alt="" width="16" height="16" class="size-4" loading="lazy" decoding="async" />
+        Hecho en {SITIO.ciudad}
+      </p>
+      <p>© {anio} {SITIO.nombre}</p>
+    </div>
+  </div>
+</footer>

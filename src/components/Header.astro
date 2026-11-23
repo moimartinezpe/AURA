@@ -1,0 +1,108 @@
+---
+import { LOGOS, MENSAJES, REDES } from '../config';
+import { enlaceWhatsApp } from '../lib/whatsapp';
+import { MENU } from '../lib/menu';
+import Icono from './iconos/Icono.astro';
+
+const menu = MENU;
+
+const actual = Astro.url.pathname.replace(/\/?$/, '/');
+const wa = enlaceWhatsApp(MENSAJES.general);
+const { ancho, alto } = LOGOS.proporcion;
+---
+
+<header class="sticky top-0 z-40 border-b border-chocolate/10 bg-crema">
+  <div class="contenedor grid h-[76px] grid-cols-[48px_1fr_48px] items-center lg:flex lg:h-[88px] lg:justify-between lg:gap-8">
+    <button
+      id="menu-boton"
+      type="button"
+      class="-ml-3 grid size-12 place-items-center rounded-full text-cafe lg:hidden"
+      aria-label="Abrir menú"
+      aria-expanded="false"
+      aria-controls="menu-movil"
+    >
+      <span data-icono="abrir"><Icono nombre="menu" class="size-6" /></span>
+      <span data-icono="cerrar" hidden><Icono nombre="cerrar" class="size-6" /></span>
+    </button>
+
+    <a href="/" class="justify-self-center py-2" aria-label="AURA Joyería — Inicio">
+      <img src={LOGOS.chocolate} alt="AURA Joyería" width={ancho} height={alto} class="h-[56px] w-auto lg:h-[64px]" />
+    </a>
+
+    <nav class="hidden lg:block" aria-label="Menú principal">
+      <ul class="flex items-center gap-6 xl:gap-8">
+        {
+          menu.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class:list={[
+                  'etiqueta border-b py-2 whitespace-nowrap transition-colors hover:border-chocolate',
+                  actual.startsWith(item.href) ? 'border-chocolate' : 'border-transparent',
+                ]}
+                aria-current={actual.startsWith(item.href) ? 'page' : undefined}
+              >
+                {item.texto}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <a
+      href={wa}
+      target="_blank"
+      rel="noopener"
+      class="-mr-3 grid size-12 place-items-center justify-self-end rounded-full text-cafe lg:mr-0 lg:hidden"
+      aria-label="Escríbenos por WhatsApp"
+    >
+      <Icono nombre="whatsapp" class="size-6" />
+    </a>
+    <a href={wa} target="_blank" rel="noopener" class="btn btn-primario hidden lg:inline-flex">
+      <Icono nombre="whatsapp" class="size-4" /> WhatsApp
+    </a>
+  </div>
+
+  <!-- Menú en celular -->
+  <div id="menu-movil" class="h-[calc(100svh-76px)] overflow-y-auto border-t border-chocolate/10 bg-crema lg:hidden" hidden>
+    <nav class="contenedor pt-4 pb-10" aria-label="Menú">
+      <ul class="divide-y divide-chocolate/10">
+        <li><a href="/" class="flex min-h-14 items-center font-titulo text-lg text-cafe">Inicio</a></li>
+        {
+          menu.map((item) => (
+            <li>
+              <a href={item.href} class="flex min-h-14 items-center font-titulo text-lg text-cafe" aria-current={actual.startsWith(item.href) ? 'page' : undefined}>
+                {item.texto}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a href={wa} target="_blank" rel="noopener" class="btn btn-primario mt-8 w-full">
+        <Icono nombre="whatsapp" class="size-4" /> Pedir por WhatsApp
+      </a>
+      <a href={REDES.tiktok} target="_blank" rel="noopener" class="etiqueta mt-6 flex items-center justify-center gap-2">
+        <Icono nombre="tiktok" class="size-4" />
+        {REDES.usuario}
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const boton = document.getElementById('menu-boton');
+  const panel = document.getElementById('menu-movil');
+  if (boton && panel) {
+    const cambiar = (abrir: boolean) => {
+      panel.hidden = !abrir;
+      boton.setAttribute('aria-expanded', String(abrir));
+      boton.setAttribute('aria-label', abrir ? 'Cerrar menú' : 'Abrir menú');
+      boton.querySelector<HTMLElement>('[data-icono="abrir"]')!.hidden = abrir;
+      boton.querySelector<HTMLElement>('[data-icono="cerrar"]')!.hidden = !abrir;
+      document.body.style.overflow = abrir ? 'hidden' : '';
+    };
+    boton.addEventListener('click', () => cambiar(panel.hidden));
+    document.addEventListener('keydown', (e) => e.key === 'Escape' && !panel.hidden && cambiar(false));
+  }
+</script>

@@ -1,0 +1,31 @@
+---
+import { Image } from 'astro:assets';
+import { foto } from '../lib/fotos';
+import { textoPrecio, type Producto } from '../lib/catalogo';
+
+interface Props {
+  producto: Producto;
+  titulo?: 'h2' | 'h3';
+}
+const { producto: p, titulo: Titulo = 'h3' } = Astro.props;
+---
+
+<a href={`/producto/${p.id}/`} class="group block">
+  <div class="relative aspect-square overflow-hidden rounded-2xl bg-beige">
+    <Image
+      src={foto(p.fotos[0])}
+      alt={`${p.nombre}, ${p.material}`}
+      widths={[200, 300, 400, 560]}
+      sizes="(min-width: 1024px) 360px, (min-width: 640px) 45vw, 44vw"
+      quality={70}
+      class="size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+    />
+    {p.agotado && <span class="absolute top-3 left-3 rounded-full bg-cafe px-3 py-1 text-[0.68rem] font-semibold tracking-[0.18em] text-crema uppercase">Agotado</span>}
+  </div>
+  <div class="mt-3 px-0.5">
+    <p class="etiqueta text-[0.68rem] tracking-[0.18em]">{p.coleccion}</p>
+    <Titulo class="mt-1 text-[0.95rem] leading-snug sm:text-base">{p.nombre}</Titulo>
+    <p class="mt-1 text-sm">{textoPrecio(p)}</p>
+    {p.acabados.length > 0 && <p class="mt-0.5 text-xs">{p.acabados.join(' · ')}</p>}
+  </div>
+</a>

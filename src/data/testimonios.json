@@ -1,0 +1,20 @@
+[
+  {
+    "ejemplo": true,
+    "nombre": "Nombre de la clienta",
+    "distrito": "Distrito",
+    "texto": "TODO: aquí va un comentario real de una clienta (por ejemplo, copiado de TikTok o WhatsApp con su permiso)."
+  },
+  {
+    "ejemplo": true,
+    "nombre": "Nombre del cliente",
+    "distrito": "Provincia",
+    "texto": "TODO: aquí va un comentario real de un cliente sobre su joya grabada."
+  },
+  {
+    "ejemplo": true,
+    "nombre": "Nombre de la clienta",
+    "distrito": "Distrito",
+    "texto": "TODO: aquí va un comentario real sobre la entrega o el estuche de regalo."
+  }
+]

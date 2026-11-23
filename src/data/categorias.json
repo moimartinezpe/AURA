@@ -1,0 +1,11 @@
+[
+  { "id": "fotograbado", "nombre": "Fotograbado", "foto": "collar-aldo.jpg" },
+  { "id": "parejas", "nombre": "Parejas", "foto": "collar-eterno.jpg" },
+  { "id": "religiosos", "nombre": "Religiosos", "foto": "collar-virgen-del-carmen.jpg" },
+  { "id": "mascotas", "nombre": "Mascotas", "foto": "collar-melodie.jpg", "enlace": "/medallas-para-mascotas/" },
+  { "id": "iniciales-y-nombres", "nombre": "Iniciales y nombres", "foto": "collar-destello.jpg" },
+  { "id": "pulseras", "nombre": "Pulseras", "foto": "pulsera-esencial.jpg" },
+  { "id": "graduacion", "nombre": "Graduación", "foto": "collar-birrete.jpg" },
+  { "id": "llaveros", "nombre": "Llaveros", "foto": "llavero-smite.jpg" },
+  { "id": "anillos-promesa", "nombre": "Anillos promesa", "foto": "anillos-promesa-red.jpg" }
+]

@@ -1,0 +1,94 @@
+---
+// Tipografías de Google Fonts, servidas desde la propia web (más rápido en celular)
+import '@fontsource/cinzel/500.css';
+import '@fontsource-variable/montserrat/wght.css';
+import '@fontsource/mr-de-haviland/400.css';
+import '../styles/global.css';
+import montserrat from '@fontsource-variable/montserrat/files/montserrat-latin-wght-normal.woff2?url';
+import cinzel from '@fontsource/cinzel/files/cinzel-latin-500-normal.woff2?url';
+
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppFlotante from '../components/WhatsAppFlotante.astro';
+import { LOGOS, REDES, SITIO } from '../config';
+import { numeroWhatsApp } from '../lib/whatsapp';
+
+interface Props {
+  /** Título de la página (se le agrega " | AURA Joyería") */
+  titulo: string;
+  /** Descripción para Google (150–160 caracteres aprox.) */
+  descripcion: string;
+  /** Imagen para compartir en redes (por defecto, el logo) */
+  imagen?: string;
+  /** true = usar el título tal cual, sin agregar el nombre de la marca */
+  tituloCompleto?: boolean;
+  /** Mensaje del botón flotante de WhatsApp en esta página */
+  mensajeWhatsApp?: string;
+}
+
+const { titulo, descripcion, imagen = '/og-aura.jpg', tituloCompleto = false, mensajeWhatsApp } = Astro.props;
+
+const tituloFinal = tituloCompleto ? titulo : `${titulo} | ${SITIO.nombre}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const imagenOg = new URL(imagen, Astro.site);
+
+const esquema = {
+  '@context': 'https://schema.org',
+  '@type': 'JewelryStore',
+  name: SITIO.nombre,
+  slogan: SITIO.lema,
+  url: new URL('/', Astro.site).href,
+  logo: new URL('/og-aura.jpg', Astro.site).href,
+  image: imagenOg.href,
+  address: { '@type': 'PostalAddress', addressLocality: 'Lima', addressCountry: 'PE' },
+  ...(numeroWhatsApp && { telephone: `+${numeroWhatsApp}` }),
+  sameAs: [REDES.tiktok, REDES.instagram, REDES.facebook].filter(Boolean),
+};
+---
+
+<!doctype html>
+<html lang="es-PE">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{tituloFinal}</title>
+    <meta name="description" content={descripcion} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#F4EEE4" />
+
+    <link rel="icon" href={LOGOS.estrellaChocolate} type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <link rel="preload" href={montserrat} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={cinzel} as="font" type="font/woff2" crossorigin />
+
+    <!-- Al compartir el link en WhatsApp, Facebook, etc. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITIO.nombre} />
+    <meta property="og:locale" content="es_PE" />
+    <meta property="og:title" content={tituloFinal} />
+    <meta property="og:description" content={descripcion} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imagenOg} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Logo de AURA Joyería" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(esquema)} />
+    <slot name="head" />
+  </head>
+  <body class="flex min-h-svh flex-col">
+    <a href="#contenido" class="sr-only z-[60] rounded-full bg-chocolate px-5 py-3 text-crema focus:not-sr-only focus:fixed focus:top-3 focus:left-3">
+      Saltar al contenido
+    </a>
+    <Header />
+    <main id="contenido" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+    <WhatsAppFlotante mensaje={mensajeWhatsApp} />
+  </body>
+</html>

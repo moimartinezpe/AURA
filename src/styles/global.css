@@ -1,0 +1,82 @@
+@import 'tailwindcss';
+
+/* ── Identidad AURA (Manual de Identidad 2026.1) ─────────────────── */
+@theme {
+  --color-crema: #f4eee4; /* Crema Marfil: fondo */
+  --color-beige: #e6d9c8; /* Beige Crema: secciones alternas */
+  --color-chocolate: #5e4434; /* Chocolate: textos y botones */
+  --color-cafe: #3b281c; /* Café Oscuro: títulos y footer */
+  --color-dorado: #b8975a; /* Dorado AURA: solo acentos pequeños */
+
+  --font-titulo: 'Cinzel', Georgia, serif;
+  --font-texto: 'Montserrat Variable', 'Segoe UI', Arial, sans-serif;
+  --font-mano: 'Mr De Haviland', cursive;
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-padding-top: 6rem;
+  }
+  body {
+    @apply bg-crema font-texto text-chocolate antialiased;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-titulo text-cafe;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+    text-wrap: balance;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-chocolate);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  ::selection {
+    background: var(--color-beige);
+    color: var(--color-cafe);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+}
+
+@layer components {
+  .contenedor {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+  /* Etiquetas: Montserrat en mayúsculas con letras espaciadas */
+  .etiqueta {
+    @apply font-texto text-xs font-semibold tracking-[0.22em] text-chocolate uppercase;
+  }
+  /* Frases cortas "a mano": solo para Gracias / Detalles que iluminan */
+  .mano {
+    @apply font-mano leading-none font-normal tracking-normal;
+  }
+  .btn {
+    @apply inline-flex min-h-12 items-center justify-center gap-2.5 rounded-full px-7 py-3 text-center text-[0.8rem] font-semibold tracking-[0.16em] uppercase transition-colors duration-200;
+  }
+  .btn-primario {
+    @apply bg-chocolate text-crema hover:bg-cafe;
+  }
+  .btn-secundario {
+    @apply border border-chocolate text-chocolate hover:bg-chocolate hover:text-crema;
+  }
+  .btn-claro {
+    @apply bg-crema text-cafe hover:bg-beige;
+  }
+  /* Ocultar la barra de desplazamiento en carruseles táctiles */
+  .sin-barra {
+    scrollbar-width: none;
+  }
+  .sin-barra::-webkit-scrollbar {
+    display: none;
+  }
+}
