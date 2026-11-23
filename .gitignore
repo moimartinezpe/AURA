@@ -11,4 +11,4 @@ dist/
 .env.*
 
 # capturas de revisión (no son parte de la web)
-vista-previa-*.png
+vista-previa-*
